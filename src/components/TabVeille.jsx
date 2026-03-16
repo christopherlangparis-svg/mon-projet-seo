@@ -2,11 +2,14 @@ import { useState } from 'react';
 import {
   TrendingUp, Search, Globe, CheckCircle2, XCircle,
   Copy, ClipboardCheck, ChevronDown, ChevronUp,
-  BarChart2, Target, Zap, Wand2,
+  BarChart2, Target, Zap, Wand2, Plus, Trash2, Pencil,
 } from 'lucide-react';
 import { useCopyToClipboard } from '../hooks/useCopyToClipboard.js';
+import { useLocalStorage } from '../hooks/useLocalStorage.js';
+import { Modal, Field, Input, FormActions, DirtyBanner, IconButton } from './formUI.jsx';
 
-const COMPETITORS_DATA = [
+// ─── Données initiales ────────────────────────────────────────────────────────
+const INITIAL_COMPETITORS = [
   {
     name: 'La Capitainerie', url: 'lacapitainerie.com',
     colorClass: 'bg-[#1B263B]', borderClass: 'border-[#1B263B]', barClass: 'bg-[#1B263B]',
@@ -46,6 +49,20 @@ const CRITERIA_LABELS = {
   metaDescOptimise:    { label: 'Meta Description optimisée',    weight: 1 },
   maillageInterne:     { label: 'Maillage interne par secteur',  weight: 2 },
 };
+
+// Palette de couleurs disponibles pour les nouveaux concurrents
+const COLOR_PALETTE = [
+  { colorClass: 'bg-purple-600',  borderClass: 'border-purple-600',  barClass: 'bg-purple-600' },
+  { colorClass: 'bg-rose-600',    borderClass: 'border-rose-600',    barClass: 'bg-rose-600' },
+  { colorClass: 'bg-orange-500',  borderClass: 'border-orange-500',  barClass: 'bg-orange-500' },
+  { colorClass: 'bg-teal-600',    borderClass: 'border-teal-600',    barClass: 'bg-teal-600' },
+  { colorClass: 'bg-indigo-600',  borderClass: 'border-indigo-600',  barClass: 'bg-indigo-600' },
+];
+
+function getNextColor(competitors) {
+  const used = competitors.filter(c => !c.isUs).length;
+  return COLOR_PALETTE[used % COLOR_PALETTE.length];
+}
 
 function computeScore(criteria) {
   let total = 0, max = 0;
@@ -99,6 +116,7 @@ function analyzeCompetitorUrl(rawUrl) {
   return { url, segments, detectedKw, hasDescriptiveSlug, depth, strategy };
 }
 
+// ─── Composants UI ────────────────────────────────────────────────────────────
 function StatusIcon({ ok, size = 16 }) {
   return ok
     ? <CheckCircle2 size={size} className="text-emerald-500" />
@@ -125,7 +143,10 @@ function StrategyBlock({ strategy, onCopy, copied }) {
   return (
     <div className="bg-slate-900 rounded-xl p-4 space-y-3">
       <p className="text-[10px] text-[#E09F3E] uppercase font-bold">⚡ Stratégie recommandée pour La Capitainerie</p>
-      {[['URL', strategy.url, 'text-emerald-400 font-mono text-xs'], ['Title', strategy.title, 'text-blue-300 font-mono text-xs'], ['Description', strategy.description, 'text-slate-300 text-xs leading-relaxed']].map(([lbl, val, cls]) => (
+      {[['URL', strategy.url, 'text-emerald-400 font-mono text-xs'],
+        ['Title', strategy.title, 'text-blue-300 font-mono text-xs'],
+        ['Description', strategy.description, 'text-slate-300 text-xs leading-relaxed']
+      ].map(([lbl, val, cls]) => (
         <div key={lbl} className="border-t border-white/10 pt-2 first:border-0 first:pt-0">
           <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">{lbl}</p>
           <p className={cls}>{val}</p>
@@ -138,18 +159,109 @@ function StrategyBlock({ strategy, onCopy, copied }) {
   );
 }
 
+// ─── Modale ajout / édition concurrent ───────────────────────────────────────
+const EMPTY_CRITERIA = Object.fromEntries(Object.keys(CRITERIA_LABELS).map(k => [k, false]));
+
+function CompetitorForm({ initial, modalTitle, onClose, onSave, saveLabel }) {
+  const [name, setName]       = useState(initial?.name ?? '');
+  const [url, setUrl]         = useState(initial?.url ?? '');
+  const [criteria, setCriteria] = useState(initial?.criteria ?? { ...EMPTY_CRITERIA });
+
+  const toggle = (key) => setCriteria(c => ({ ...c, [key]: !c[key] }));
+  const canSave = name.trim() && url.trim();
+
+  return (
+    <Modal title={modalTitle} onClose={onClose} wide>
+      <div className="space-y-5">
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Nom du site">
+            <Input value={name} onChange={setName} placeholder="Ex: MarinJob.fr" autoFocus maxLength={30} />
+          </Field>
+          <Field label="URL du site">
+            <Input value={url} onChange={setUrl} placeholder="Ex: marinjob.fr" maxLength={60} />
+          </Field>
+        </div>
+
+        <Field label="Évaluation des critères SEO">
+          <p className="text-xs text-slate-400 mb-3">
+            Activez les critères que ce concurrent respecte. Le score est calculé automatiquement.
+          </p>
+          <div className="grid grid-cols-1 gap-2">
+            {Object.entries(CRITERIA_LABELS).map(([key, { label, weight }]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => toggle(key)}
+                className={`flex items-center justify-between p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                  criteria[key]
+                    ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                    : 'border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <StatusIcon ok={criteria[key]} size={15} />
+                  {label}
+                </span>
+                <span className="text-[10px] text-slate-400 font-normal shrink-0">×{weight}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Score en temps réel */}
+          <div className="mt-4 p-3 bg-slate-100 rounded-xl flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-600">Score calculé</span>
+            <span className="text-lg font-black text-[#1B263B]">{computeScore(criteria)}%</span>
+          </div>
+        </Field>
+      </div>
+
+      <FormActions
+        onCancel={onClose}
+        onSubmit={() => { if (canSave) { onSave({ name: name.trim(), url: url.trim(), criteria }); onClose(); } }}
+        submitLabel={saveLabel}
+      />
+    </Modal>
+  );
+}
+
+// ─── Composant principal ──────────────────────────────────────────────────────
 export function TabVeille() {
+  const [competitors, setCompetitors, resetCompetitors] = useLocalStorage('seo_competitors', INITIAL_COMPETITORS);
   const [urlInput, setUrlInput]     = useState('');
   const [analysis, setAnalysis]     = useState(null);
   const [expandedKw, setExpandedKw] = useState(null);
   const [filter, setFilter]         = useState('toutes');
   const { copied, copy }            = useCopyToClipboard();
 
+  // États modales
+  const [showAdd, setShowAdd]       = useState(false);
+  const [editingIdx, setEditingIdx] = useState(null);
+  const [deleteIdx, setDeleteIdx]   = useState(null);
+
+  const isDirty = JSON.stringify(competitors) !== JSON.stringify(INITIAL_COMPETITORS);
+
   const handleAnalyze = () => { if (urlInput.trim()) setAnalysis(analyzeCompetitorUrl(urlInput.trim())); };
   const filteredKw = filter === 'toutes' ? KEYWORD_GAPS : KEYWORD_GAPS.filter(k => k.priority === filter);
-  const gaps        = KEYWORD_GAPS.filter(k => !k.us).length;
-  const exclusive   = KEYWORD_GAPS.filter(k => !k.clicandsea && !k.oceandrive).length;
-  const ourScore    = computeScore(COMPETITORS_DATA[0].criteria);
+
+  const addCompetitor = ({ name, url, criteria }) => {
+    const colors = getNextColor(competitors);
+    setCompetitors(prev => [...prev, { name, url, criteria, isUs: false, ...colors }]);
+  };
+
+  const saveCompetitor = (idx, { name, url, criteria }) => {
+    setCompetitors(prev => prev.map((c, i) =>
+      i === idx ? { ...c, name, url, criteria } : c
+    ));
+  };
+
+  const deleteCompetitor = (idx) => {
+    setCompetitors(prev => prev.filter((_, i) => i !== idx));
+    setDeleteIdx(null);
+  };
+
+  const gaps      = KEYWORD_GAPS.filter(k => !k.us).length;
+  const exclusive = KEYWORD_GAPS.filter(k => !k.clicandsea && !k.oceandrive).length;
+  const ourScore  = computeScore(competitors.find(c => c.isUs)?.criteria ?? {});
 
   return (
     <div className="grid gap-8">
@@ -157,8 +269,8 @@ export function TabVeille() {
       {/* KPI */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
-          { label: 'Mots-clés non couverts',  value: gaps,       icon: Target,   color: 'bg-red-500',    desc: 'Opportunités identifiées vs concurrents' },
-          { label: 'Opportunités exclusives', value: exclusive,   icon: Zap,      color: 'bg-[#E09F3E]', desc: 'Ni Clicandsea ni Oceandrive ne les ciblent' },
+          { label: 'Mots-clés non couverts',  value: gaps,        icon: Target,    color: 'bg-red-500',    desc: 'Opportunités identifiées vs concurrents' },
+          { label: 'Opportunités exclusives', value: exclusive,    icon: Zap,       color: 'bg-[#E09F3E]', desc: 'Ni Clicandsea ni Oceandrive ne les ciblent' },
           { label: 'Score SEO actuel',        value: `${ourScore}%`, icon: BarChart2, color: 'bg-[#1B263B]', desc: 'vs 100% théorique atteignable' },
         ].map(({ label, value, icon: Icon, color, desc }) => (
           <div key={label} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2">
@@ -175,17 +287,48 @@ export function TabVeille() {
 
       {/* Radar */}
       <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex items-center gap-3">
-          <div className="p-2 bg-[#1B263B] rounded-lg"><BarChart2 size={18} className="text-[#E09F3E]" /></div>
-          <div>
-            <h2 className="text-lg font-bold text-[#1B263B]">Radar SEO Concurrentiel</h2>
-            <p className="text-xs text-slate-500">Comparaison sur 8 critères pondérés.</p>
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-[#1B263B] rounded-lg"><BarChart2 size={18} className="text-[#E09F3E]" /></div>
+            <div>
+              <h2 className="text-lg font-bold text-[#1B263B]">Radar SEO Concurrentiel</h2>
+              <p className="text-xs text-slate-500">Comparaison sur 8 critères pondérés — {competitors.length} site{competitors.length > 1 ? 's' : ''} analysé{competitors.length > 1 ? 's' : ''}.</p>
+            </div>
           </div>
+          <button
+            onClick={() => setShowAdd(true)}
+            className="flex items-center gap-2 bg-[#1B263B] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#25324d] transition-colors"
+          >
+            <Plus size={14} /> Ajouter un concurrent
+          </button>
         </div>
+
+        {isDirty && <div className="px-6 pt-4"><DirtyBanner onReset={resetCompetitors} /></div>}
+
         <div className="p-6">
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {COMPETITORS_DATA.map(c => (
-              <div key={c.name} className={`p-5 rounded-2xl border-2 ${c.borderClass} ${c.isUs ? 'bg-slate-50' : 'bg-white'}`}>
+          {/* Cartes de score */}
+          <div className="flex flex-wrap gap-4 mb-8">
+            {competitors.map((c, idx) => (
+              <div key={idx} className={`flex-1 min-w-[180px] p-5 rounded-2xl border-2 ${c.borderClass} ${c.isUs ? 'bg-slate-50' : 'bg-white'} relative group`}>
+                {/* Actions (pas sur "nous") */}
+                {!c.isUs && (
+                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <IconButton
+                      onClick={() => setEditingIdx(idx)}
+                      title="Modifier"
+                      className="bg-white border border-slate-200 text-slate-400 hover:text-[#1B263B] hover:border-[#1B263B] shadow-sm"
+                    >
+                      <Pencil size={12} />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => setDeleteIdx(idx)}
+                      title="Supprimer"
+                      className="bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-300 shadow-sm"
+                    >
+                      <Trash2 size={12} />
+                    </IconButton>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 mb-3">
                   <div className={`w-3 h-3 rounded-full ${c.colorClass}`} />
                   <span className="font-bold text-sm">{c.name}</span>
@@ -196,13 +339,17 @@ export function TabVeille() {
               </div>
             ))}
           </div>
+
+          {/* Tableau comparatif */}
           <div className="overflow-x-auto rounded-xl border border-slate-100">
             <table className="w-full text-left">
               <thead className="bg-slate-50 border-b border-slate-100">
                 <tr>
                   <th className="px-5 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Critère</th>
-                  {COMPETITORS_DATA.map(c => (
-                    <th key={c.name} className="px-5 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center">{c.name}</th>
+                  {competitors.map((c, idx) => (
+                    <th key={idx} className="px-5 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center whitespace-nowrap">
+                      {c.name}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -212,8 +359,10 @@ export function TabVeille() {
                     <td className="px-5 py-3 text-sm text-slate-700 font-medium">
                       {label} <span className="text-[10px] text-slate-300">×{weight}</span>
                     </td>
-                    {COMPETITORS_DATA.map(c => (
-                      <td key={c.name} className="px-5 py-3 text-center"><StatusIcon ok={c.criteria[key]} /></td>
+                    {competitors.map((c, idx) => (
+                      <td key={idx} className="px-5 py-3 text-center">
+                        <StatusIcon ok={c.criteria[key]} />
+                      </td>
                     ))}
                   </tr>
                 ))}
@@ -241,7 +390,8 @@ export function TabVeille() {
                 placeholder="https://www.clicandsea.fr/emploi/capitaine-200-yachting"
                 className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-[#E09F3E] outline-none font-mono" />
             </div>
-            <button onClick={handleAnalyze} className="bg-[#1B263B] text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#25324d] transition-all shrink-0">
+            <button onClick={handleAnalyze}
+              className="bg-[#1B263B] text-white px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#25324d] transition-all shrink-0">
               <Search size={15} /> Analyser
             </button>
           </div>
@@ -273,7 +423,9 @@ export function TabVeille() {
               </div>
               <div className="space-y-3">
                 <h3 className="text-sm font-bold text-[#1B263B] flex items-center gap-2"><Wand2 size={15} className="text-[#E09F3E]" /> Contre-stratégie La Capitainerie</h3>
-                <StrategyBlock strategy={analysis.strategy} onCopy={() => copy(`URL: ${analysis.strategy.url}\nTitle: ${analysis.strategy.title}\nDescription: ${analysis.strategy.description}`)} copied={copied} />
+                <StrategyBlock strategy={analysis.strategy}
+                  onCopy={() => copy(`URL: ${analysis.strategy.url}\nTitle: ${analysis.strategy.title}\nDescription: ${analysis.strategy.description}`)}
+                  copied={copied} />
               </div>
             </div>
           )}
@@ -306,7 +458,8 @@ export function TabVeille() {
             const isOpen = expandedKw === i;
             return (
               <div key={i}>
-                <div className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50 cursor-pointer transition-colors group" onClick={() => setExpandedKw(isOpen ? null : i)}>
+                <div className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50 cursor-pointer transition-colors group"
+                  onClick={() => setExpandedKw(isOpen ? null : i)}>
                   <div className="flex-1 flex items-center gap-3">
                     <span className="font-bold text-sm text-slate-800">{kw.keyword}</span>
                     <PriorityBadge priority={kw.priority} />
@@ -326,7 +479,9 @@ export function TabVeille() {
                 {isOpen && (
                   <div className="px-6 pb-5 bg-slate-50 border-t border-slate-100">
                     <div className="mt-4">
-                      <StrategyBlock strategy={strategy} onCopy={() => copy(`URL: ${strategy.url}\nTitle: ${strategy.title}\nDescription: ${strategy.description}`)} copied={copied} />
+                      <StrategyBlock strategy={strategy}
+                        onCopy={() => copy(`URL: ${strategy.url}\nTitle: ${strategy.title}\nDescription: ${strategy.description}`)}
+                        copied={copied} />
                     </div>
                   </div>
                 )}
@@ -336,6 +491,37 @@ export function TabVeille() {
         </div>
       </section>
 
+      {/* ── Modales ── */}
+      {showAdd && (
+        <CompetitorForm
+          modalTitle="Ajouter un concurrent"
+          onClose={() => setShowAdd(false)}
+          onSave={addCompetitor}
+          saveLabel="Ajouter"
+        />
+      )}
+      {editingIdx !== null && (
+        <CompetitorForm
+          modalTitle={`Modifier — ${competitors[editingIdx]?.name}`}
+          initial={competitors[editingIdx]}
+          onClose={() => setEditingIdx(null)}
+          onSave={(data) => saveCompetitor(editingIdx, data)}
+          saveLabel="Enregistrer"
+        />
+      )}
+      {deleteIdx !== null && (
+        <Modal title="Supprimer ce concurrent ?" onClose={() => setDeleteIdx(null)}>
+          <p className="text-sm text-slate-600">
+            Vous allez supprimer <strong>"{competitors[deleteIdx]?.name}"</strong> du radar. Réversible via "Réinitialiser".
+          </p>
+          <FormActions
+            onCancel={() => setDeleteIdx(null)}
+            onSubmit={() => deleteCompetitor(deleteIdx)}
+            submitLabel="Supprimer"
+            danger
+          />
+        </Modal>
+      )}
     </div>
   );
 }
