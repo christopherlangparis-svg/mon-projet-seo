@@ -41,6 +41,13 @@ export const COMPETITORS = [
     description: 'Expertise Yachting. Termes techniques précis qui rassurent les armateurs.',
     highlighted: true,
   },
+  {
+    name: "Capt'n Boat",
+    tag: 'Marketplace',
+    tagStyle: 'bg-purple-100 text-purple-700',
+    description: "Place de marché maritime avec blog SEO très actif. Fort sur convoyage, skipper et portage salarial marin.",
+    highlighted: false,
+  },
 ];
 
 export const SILOS = [

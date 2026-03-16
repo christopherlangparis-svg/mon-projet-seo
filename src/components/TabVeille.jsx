@@ -37,6 +37,21 @@ const INITIAL_COMPETITORS = [
       donneesStructurees: false, metaTitleOptimise: true, metaDescOptimise: false, maillageInterne: true,
     },
   },
+  {
+    name: "Capt'n Boat", url: 'captnboat.com',
+    colorClass: 'bg-purple-600', borderClass: 'border-purple-600', barClass: 'bg-purple-600',
+    isUs: false,
+    criteria: {
+      https: true,
+      slugsDescriptifs: true,
+      motCleUrl: true,
+      canonicalCoherente: true,
+      donneesStructurees: false,
+      metaTitleOptimise: true,
+      metaDescOptimise: true,
+      maillageInterne: true,
+    },
+  },
 ];
 
 const CRITERIA_LABELS = {
@@ -74,16 +89,18 @@ function computeScore(criteria) {
 }
 
 const KEYWORD_GAPS = [
-  { keyword: 'emploi capitaine 200',         clicandsea: true,  oceandrive: false, us: false, priority: 'haute' },
-  { keyword: 'recrutement marin offshore',   clicandsea: true,  oceandrive: true,  us: false, priority: 'haute' },
-  { keyword: 'emploi yachting france',       clicandsea: true,  oceandrive: true,  us: false, priority: 'haute' },
-  { keyword: 'chef mécanicien naval CDD',    clicandsea: false, oceandrive: false, us: false, priority: 'haute' },
-  { keyword: 'matelot transport passagers',  clicandsea: true,  oceandrive: false, us: false, priority: 'moyenne' },
-  { keyword: 'officier quart machine',       clicandsea: false, oceandrive: true,  us: false, priority: 'moyenne' },
-  { keyword: 'recrutement marine marchande', clicandsea: true,  oceandrive: false, us: false, priority: 'moyenne' },
-  { keyword: 'embarquement plaisance pro',   clicandsea: false, oceandrive: true,  us: false, priority: 'moyenne' },
-  { keyword: 'brevet STCW emploi',           clicandsea: true,  oceandrive: true,  us: false, priority: 'haute' },
-  { keyword: 'mission convoyage voilier',    clicandsea: false, oceandrive: false, us: false, priority: 'basse' },
+  { keyword: 'emploi capitaine 200',         clicandsea: true,  oceandrive: false, captnboat: true,  us: false, priority: 'haute' },
+  { keyword: 'recrutement marin offshore',   clicandsea: true,  oceandrive: true,  captnboat: false, us: false, priority: 'haute' },
+  { keyword: 'emploi yachting france',       clicandsea: true,  oceandrive: true,  captnboat: false, us: false, priority: 'haute' },
+  { keyword: 'chef mécanicien naval CDD',    clicandsea: false, oceandrive: false, captnboat: false, us: false, priority: 'haute' },
+  { keyword: 'matelot transport passagers',  clicandsea: true,  oceandrive: false, captnboat: false, us: false, priority: 'moyenne' },
+  { keyword: 'officier quart machine',       clicandsea: false, oceandrive: true,  captnboat: false, us: false, priority: 'moyenne' },
+  { keyword: 'recrutement marine marchande', clicandsea: true,  oceandrive: false, captnboat: false, us: false, priority: 'moyenne' },
+  { keyword: 'embarquement plaisance pro',   clicandsea: false, oceandrive: true,  captnboat: true,  us: false, priority: 'moyenne' },
+  { keyword: 'brevet STCW emploi',           clicandsea: true,  oceandrive: true,  captnboat: false, us: false, priority: 'haute' },
+  { keyword: 'mission convoyage voilier',    clicandsea: false, oceandrive: false, captnboat: true,  us: false, priority: 'basse' },
+  { keyword: 'skipper professionnel emploi', clicandsea: false, oceandrive: false, captnboat: true,  us: false, priority: 'haute' },
+  { keyword: 'enrôlement marin portage',     clicandsea: false, oceandrive: false, captnboat: true,  us: false, priority: 'moyenne' },
 ];
 
 function toSlug(str) {
@@ -545,7 +562,7 @@ export function TabVeille() {
                     <PriorityBadge priority={kw.priority} />
                   </div>
                   <div className="hidden md:flex items-center gap-6">
-                    {[['Clicandsea', kw.clicandsea], ['Oceandrive', kw.oceandrive], ['La Capitainerie', kw.us]].map(([label, covered]) => (
+                    {[['Clicandsea', kw.clicandsea], ['Oceandrive', kw.oceandrive], ["Capt'n Boat", kw.captnboat], ['La Capitainerie', kw.us]].map(([label, covered]) => (
                       <div key={label} className="flex flex-col items-center gap-1">
                         <span className="text-[9px] text-slate-400 uppercase font-bold">{label}</span>
                         <StatusIcon ok={covered} size={15} />
