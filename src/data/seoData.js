@@ -158,3 +158,57 @@ export const SERP_DEFAULTS = {
 
 export const TITLE_MAX = 60;
 export const DESC_MAX = 155;
+
+// ─── DONNÉES VEILLE CONCURRENTIELLE ──────────────────────────────────────────
+
+export const MARITIME_KEYWORDS = [
+  { keyword: 'emploi marin',            volume: 'Élevé',  category: 'Général' },
+  { keyword: 'recrutement maritime',    volume: 'Élevé',  category: 'Général' },
+  { keyword: 'offre embarquement',      volume: 'Moyen',  category: 'Général' },
+  { keyword: 'capitaine 200',           volume: 'Moyen',  category: 'Métier' },
+  { keyword: 'chef mécanicien naval',   volume: 'Moyen',  category: 'Métier' },
+  { keyword: 'matelot pont',            volume: 'Faible', category: 'Métier' },
+  { keyword: 'emploi yachting',         volume: 'Élevé',  category: 'Secteur' },
+  { keyword: 'job offshore maritime',   volume: 'Élevé',  category: 'Secteur' },
+  { keyword: 'marine marchande emploi', volume: 'Élevé',  category: 'Secteur' },
+  { keyword: 'steward yacht',           volume: 'Moyen',  category: 'Secteur' },
+  { keyword: 'brevet STCW',             volume: 'Faible', category: 'Réglementation' },
+  { keyword: 'ENIM marin',              volume: 'Faible', category: 'Réglementation' },
+];
+
+export const DEFAULT_COMPETITORS = [
+  {
+    id: 'clicandsea',
+    name: 'Clicandsea.fr',
+    url: 'https://www.clicandsea.fr',
+    color: '#E53E3E',
+    strategy: 'Volume — couverture géographique maximale, milliers de pages indexées.',
+    urlPattern: '/offres-emploi/[metier]/[ville]',
+    strengths: ['Maillage interne massif', 'Présence locale forte', 'Ancienneté du domaine'],
+    keywords: ['emploi marin', 'recrutement maritime', 'capitaine 200', 'emploi yachting', 'marine marchande emploi'],
+    scores: { urlStructure: 5, metaTags: 4, mobileSpeed: 3, structuredData: 3, internalLinking: 5 },
+  },
+  {
+    id: 'oceandrive',
+    name: 'Oceandrive-jobs.com',
+    url: 'https://www.oceandrive-jobs.com',
+    color: '#3182CE',
+    strategy: 'Niche — expertise Yachting haut de gamme, terminologie technique pointue.',
+    urlPattern: '/jobs/[metier]-[secteur]',
+    strengths: ['Expertise sectorielle', 'Vocabulaire technique', 'Cible armateurs premium'],
+    keywords: ['emploi yachting', 'steward yacht', 'capitaine 200', 'chef mécanicien naval'],
+    scores: { urlStructure: 4, metaTags: 4, mobileSpeed: 4, structuredData: 2, internalLinking: 3 },
+  },
+];
+
+export const SCORING_CRITERIA = [
+  { key: 'urlStructure',    label: 'Structure URL',        max: 5 },
+  { key: 'metaTags',        label: 'Balises Meta',         max: 5 },
+  { key: 'mobileSpeed',     label: 'Vitesse Mobile',       max: 5 },
+  { key: 'structuredData',  label: 'Données Structurées',  max: 5 },
+  { key: 'internalLinking', label: 'Maillage Interne',     max: 5 },
+];
+
+export const MY_SCORES = {
+  urlStructure: 2, metaTags: 3, mobileSpeed: 4, structuredData: 5, internalLinking: 1,
+};
