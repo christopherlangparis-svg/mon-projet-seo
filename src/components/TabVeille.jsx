@@ -162,13 +162,72 @@ function StrategyBlock({ strategy, onCopy, copied }) {
 // ─── Modale ajout / édition concurrent ───────────────────────────────────────
 const EMPTY_CRITERIA = Object.fromEntries(Object.keys(CRITERIA_LABELS).map(k => [k, false]));
 
+// ─── Critères détectables automatiquement depuis l'URL ────────────────────────
+const AUTO_DETECTABLE = ['https', 'slugsDescriptifs', 'motCleUrl'];
+
+const MARITIME_KEYWORDS = [
+  'marin', 'maritime', 'emploi', 'recrutement', 'embarquement', 'yachting',
+  'offshore', 'capitaine', 'mecanicien', 'matelot', 'officier', 'navire',
+  'bateau', 'ship', 'crew', 'sailor', 'boat', 'peche', 'fishing',
+];
+
+function autoDetectCriteria(rawUrl) {
+  if (!rawUrl.trim()) return { ...EMPTY_CRITERIA };
+
+  let url;
+  try {
+    url = new URL(rawUrl.startsWith('http') ? rawUrl : 'https://' + rawUrl);
+  } catch {
+    return { ...EMPTY_CRITERIA };
+  }
+
+  const fullUrl   = url.href.toLowerCase();
+  const hostname  = url.hostname.toLowerCase();
+  const path      = url.pathname.toLowerCase();
+  const segments  = path.split('/').filter(Boolean);
+
+  // HTTPS — détecté depuis le protocole
+  const https = url.protocol === 'https:';
+
+  // Slugs descriptifs — au moins un segment avec tirets et longueur > 8
+  const slugsDescriptifs = segments.some(s => s.length > 8 && s.includes('-'));
+
+  // Mot-clé maritime — dans le domaine ou le chemin
+  const motCleUrl = MARITIME_KEYWORDS.some(kw =>
+    hostname.includes(kw) || path.includes(kw)
+  );
+
+  return {
+    ...EMPTY_CRITERIA,
+    https,
+    slugsDescriptifs,
+    motCleUrl,
+  };
+}
+
 function CompetitorForm({ initial, modalTitle, onClose, onSave, saveLabel }) {
-  const [name, setName]       = useState(initial?.name ?? '');
-  const [url, setUrl]         = useState(initial?.url ?? '');
+  const isEdit = !!initial;
+  const [name, setName]         = useState(initial?.name ?? '');
+  const [url, setUrl]           = useState(initial?.url ?? '');
   const [criteria, setCriteria] = useState(initial?.criteria ?? { ...EMPTY_CRITERIA });
+  const [analyzed, setAnalyzed] = useState(false);
 
   const toggle = (key) => setCriteria(c => ({ ...c, [key]: !c[key] }));
   const canSave = name.trim() && url.trim();
+
+  // Analyse automatique dès que l'URL change (seulement en mode ajout)
+  const handleUrlChange = (val) => {
+    setUrl(val);
+    if (!isEdit && val.trim().length > 5) {
+      const detected = autoDetectCriteria(val);
+      setCriteria(prev => ({
+        ...prev,
+        // On écrase uniquement les critères auto-détectables
+        ...Object.fromEntries(AUTO_DETECTABLE.map(k => [k, detected[k]])),
+      }));
+      setAnalyzed(true);
+    }
+  };
 
   return (
     <Modal title={modalTitle} onClose={onClose} wide>
@@ -178,33 +237,54 @@ function CompetitorForm({ initial, modalTitle, onClose, onSave, saveLabel }) {
             <Input value={name} onChange={setName} placeholder="Ex: MarinJob.fr" autoFocus maxLength={30} />
           </Field>
           <Field label="URL du site">
-            <Input value={url} onChange={setUrl} placeholder="Ex: marinjob.fr" maxLength={60} />
+            <Input
+              value={url}
+              onChange={handleUrlChange}
+              placeholder="https://www.marinjob.fr"
+              maxLength={80}
+            />
           </Field>
         </div>
 
+        {/* Bandeau d'analyse automatique */}
+        {analyzed && !isEdit && (
+          <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-700">
+            <span className="shrink-0 mt-0.5">🔍</span>
+            <span>
+              <strong>Analyse automatique effectuée</strong> sur HTTPS, slugs et mots-clés.
+              Les 5 critères restants nécessitent une vérification manuelle de votre part.
+            </span>
+          </div>
+        )}
+
         <Field label="Évaluation des critères SEO">
-          <p className="text-xs text-slate-400 mb-3">
-            Activez les critères que ce concurrent respecte. Le score est calculé automatiquement.
-          </p>
           <div className="grid grid-cols-1 gap-2">
-            {Object.entries(CRITERIA_LABELS).map(([key, { label, weight }]) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => toggle(key)}
-                className={`flex items-center justify-between p-3 rounded-xl border-2 text-sm font-medium transition-all ${
-                  criteria[key]
-                    ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
-                    : 'border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <StatusIcon ok={criteria[key]} size={15} />
-                  {label}
-                </span>
-                <span className="text-[10px] text-slate-400 font-normal shrink-0">×{weight}</span>
-              </button>
-            ))}
+            {Object.entries(CRITERIA_LABELS).map(([key, { label, weight }]) => {
+              const isAuto = AUTO_DETECTABLE.includes(key) && analyzed && !isEdit;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => toggle(key)}
+                  className={`flex items-center justify-between p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                    criteria[key]
+                      ? 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                      : 'border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <StatusIcon ok={criteria[key]} size={15} />
+                    {label}
+                    {isAuto && (
+                      <span className="text-[9px] font-bold bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full uppercase">
+                        Auto
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-normal shrink-0">×{weight}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Score en temps réel */}
