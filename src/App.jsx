@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Anchor, BarChart3, Layout, FileText, Code2, Calendar, Eye, ArrowRight, Download, Wrench, TrendingUp, LogOut, ClipboardList } from 'lucide-react';
+import { Anchor, BarChart3, Layout, FileText, Code2, Calendar, Eye, ArrowRight, Download, Wrench, TrendingUp, LogOut, ClipboardList, BookOpen } from 'lucide-react';
 import { TabConstat }   from './components/TabConstat.jsx';
 import { TabSilos }     from './components/TabSilos.jsx';
 import { TabSerp }      from './components/TabSerp.jsx';
@@ -9,19 +9,21 @@ import { TabRoadmap }   from './components/TabRoadmap.jsx';
 import { TabOutils }    from './components/TabOutils.jsx';
 import { TabVeille }    from './components/TabVeille.jsx';
 import { TabAudit }     from './components/TabAudit.jsx';
+import { TabRapport }   from './components/TabRapport.jsx';
 import { LoginScreen }  from './components/LoginScreen.jsx';
 import { JSON_LD_TEMPLATE, META_PAGES } from './data/seoData.js';
 
 const TABS = [
-  { id: 'constat', label: 'Constat',                icon: BarChart3 },
-  { id: 'silos',   label: 'Silos',                  icon: Layout },
-  { id: 'meta',    label: 'Plan de Marquage',        icon: FileText },
-  { id: 'serp',    label: 'Simulateur SERP',         icon: Eye },
-  { id: 'tech',    label: 'Spéc. Tech',              icon: Code2 },
-  { id: 'outils',  label: 'Outils SEO',              icon: Wrench },
-  { id: 'veille',  label: 'Veille',                  icon: TrendingUp },
-  { id: 'audit',   label: 'Audit SEO',               icon: ClipboardList, badge: 'NEW' },
-  { id: 'roadmap', label: 'Roadmap',                 icon: Calendar },
+  { id: 'constat', label: 'Constat',         icon: BarChart3 },
+  { id: 'silos',   label: 'Silos',           icon: Layout },
+  { id: 'meta',    label: 'Plan de Marquage',icon: FileText },
+  { id: 'serp',    label: 'Simulateur SERP', icon: Eye },
+  { id: 'tech',    label: 'Spéc. Tech',      icon: Code2 },
+  { id: 'outils',  label: 'Outils SEO',      icon: Wrench },
+  { id: 'veille',  label: 'Veille',          icon: TrendingUp },
+  { id: 'audit',   label: 'Audit SEO',       icon: ClipboardList, badge: 'NEW' },
+  { id: 'rapport', label: 'Rapports',        icon: BookOpen, badge: 'NEW' },
+  { id: 'roadmap', label: 'Roadmap',         icon: Calendar },
 ];
 
 const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000;
@@ -59,9 +61,16 @@ export default function App() {
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />;
 
   const TAB_COMPONENTS = {
-    constat: <TabConstat />, silos: <TabSilos />, meta: <TabMeta />,
-    serp: <TabSerp />, tech: <TabTech />, outils: <TabOutils />,
-    veille: <TabVeille />, audit: <TabAudit />, roadmap: <TabRoadmap />,
+    constat: <TabConstat />,
+    silos:   <TabSilos />,
+    meta:    <TabMeta />,
+    serp:    <TabSerp />,
+    tech:    <TabTech />,
+    outils:  <TabOutils />,
+    veille:  <TabVeille />,
+    audit:   <TabAudit />,
+    rapport: <TabRapport />,
+    roadmap: <TabRoadmap />,
   };
 
   return (

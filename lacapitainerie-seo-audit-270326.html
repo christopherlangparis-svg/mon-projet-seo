@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit SEO — La Capitainerie 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B263B;
+    --gold: #E09F3E;
+    --gold-light: #F5C97A;
+    --cream: #FBF8F3;
+    --slate: #64748B;
+    --red: #EF4444;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --blue: #3B82F6;
+    --border: #E2E8F0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 60px 0 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(224,159,62,0.04) 40px,
+      rgba(224,159,62,0.04) 41px
+    );
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(224,159,62,0.15);
+    border: 1px solid rgba(224,159,62,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 24px;
+  }
+  .header-badge span { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  h1.main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  h1.main-title em { color: var(--gold); font-style: italic; }
+
+  .header-meta {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-top: 20px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(27,38,59,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(224,159,62,0.2);
+    z-index: 100;
+    padding: 0 40px;
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  nav a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 16px 14px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  nav a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 960px; margin: 0 auto; padding: 0 40px 80px; }
+
+  section { padding: 64px 0 0; }
+
+  h2.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  h2.section-title .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .section-intro {
+    color: var(--slate);
+    max-width: 640px;
+    margin-bottom: 36px;
+    font-size: 15px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 36px;
+    opacity: 0.3;
+  }
+
+  /* ── BEFORE/AFTER GRID ── */
+  .before-after-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    box-shadow: 0 4px 24px rgba(27,38,59,0.08);
+  }
+  .ba-col {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .ba-col.before { background: #FFF5F5; }
+  .ba-col.after  { background: #F0FDF4; }
+  .ba-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .ba-col.before .ba-header { color: #EF4444; }
+  .ba-col.after  .ba-header { color: #10B981; }
+  .ba-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .ba-col.before .ba-dot { background: #EF4444; }
+  .ba-col.after  .ba-dot { background: #10B981; }
+
+  .ba-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 14px 16px;
+    border-radius: 10px;
+  }
+  .ba-col.before .ba-item { background: rgba(239,68,68,0.06); }
+  .ba-col.after  .ba-item { background: rgba(16,185,129,0.07); }
+  .ba-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .ba-item strong { display: block; font-weight: 600; margin-bottom: 2px; color: var(--navy); font-size: 13.5px; }
+  .ba-item p { color: var(--slate); font-size: 13px; margin: 0; }
+
+  /* ── KPI BAR ── */
+  .kpi-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .kpi-card {
+    background: white;
+    border-radius: 14px;
+    padding: 24px 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(27,38,59,0.04);
+    text-align: center;
+  }
+  .kpi-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-label { font-size: 12px; color: var(--slate); line-height: 1.3; }
+  .kpi-card.green .kpi-val { color: var(--green); }
+  .kpi-card.amber .kpi-val { color: var(--amber); }
+  .kpi-card.red   .kpi-val { color: var(--red); }
+  .kpi-card.navy  .kpi-val { color: var(--navy); }
+
+  /* ── URL TREE ── */
+  .url-tree {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 12px rgba(27,38,59,0.04);
+  }
+  .url-tree-header {
+    padding: 16px 24px;
+    background: var(--navy);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .url-tree-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+  .url-section {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+  .url-section:last-child { border-bottom: none; }
+  .url-section-title {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 10px;
+  }
+  .url-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .url-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: #F1F5F9;
+    color: var(--navy);
+    border: 1px solid var(--border);
+  }
+  .url-chip.good { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); color: #065F46; }
+
+  /* ── ANALYSIS CARDS ── */
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .analysis-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(27,38,59,0.04);
+  }
+  .analysis-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .analysis-card h3 .tag {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .tag.ok  { background: rgba(16,185,129,0.12); color: #065F46; }
+  .tag.mid { background: rgba(245,158,11,0.12); color: #92400E; }
+  .tag.bad { background: rgba(239,68,68,0.12);  color: #991B1B; }
+  .analysis-card p { font-size: 13.5px; color: var(--slate); line-height: 1.6; }
+  .code-snip {
+    margin-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    background: #F8FAFC;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--navy);
+    word-break: break-all;
+  }
+
+  /* ── IMPROVEMENT ITEMS ── */
+  .improve-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+  .improve-item {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 22px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(27,38,59,0.04);
+    transition: box-shadow 0.2s;
+  }
+  .improve-item:hover { box-shadow: 0 4px 20px rgba(27,38,59,0.10); }
+  .improve-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    color: #E2E8F0;
+    flex-shrink: 0;
+    min-width: 36px;
+  }
+  .improve-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .improve-body p  { font-size: 13.5px; color: var(--slate); line-height: 1.6; }
+  .improve-body .fix {
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    background: #FFFBEB;
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #78350F;
+  }
+  .improve-body .fix strong { display: block; font-weight: 600; margin-bottom: 4px; color: #92400E; }
+
+  /* ── PRIORITY TABLE ── */
+  .priority-block { margin-bottom: 24px; }
+  .priority-block + .priority-block { border-top: 1px solid var(--border); padding-top: 24px; }
+  .priority-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+  }
+  .priority-badge.p1 { background: rgba(239,68,68,0.1); color: #B91C1C; border: 1px solid rgba(239,68,68,0.2); }
+  .priority-badge.p2 { background: rgba(245,158,11,0.1); color: #B45309; border: 1px solid rgba(245,158,11,0.2); }
+  .priority-badge.p3 { background: rgba(59,130,246,0.1); color: #1D4ED8; border: 1px solid rgba(59,130,246,0.2); }
+  .priority-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  .action-table { width: 100%; border-collapse: collapse; }
+  .action-table th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 600;
+    padding: 8px 16px;
+    background: #F8FAFC;
+    border-bottom: 1px solid var(--border);
+  }
+  .action-table th:first-child { border-radius: 10px 0 0 0; }
+  .action-table th:last-child  { border-radius: 0 10px 0 0; }
+  .action-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+    vertical-align: top;
+  }
+  .action-table tr:last-child td { border-bottom: none; }
+  .action-table tr:hover td { background: #FAFAFA; }
+  .action-table .who {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: #F1F5F9;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    color: var(--navy);
+  }
+  .action-table .effort {
+    display: flex;
+    gap: 3px;
+  }
+  .effort-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .effort-dot.filled { background: var(--gold); }
+  .effort-dot.empty  { background: #E2E8F0; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: var(--navy);
+    color: white;
+    border-radius: 20px;
+    padding: 48px;
+    margin-top: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,159,62,0.15), transparent 70%);
+  }
+  .conclusion-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .conclusion-box p {
+    color: rgba(255,255,255,0.65);
+    max-width: 620px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+  .conclusion-box .gold { color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 40px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--slate);
+    letter-spacing: 0.08em;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .header-inner, main { padding: 0 20px; }
+    .before-after-grid { grid-template-columns: 1fr; }
+    .kpi-bar { grid-template-columns: 1fr 1fr; }
+    .analysis-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 20px; }
+    .conclusion-box { padding: 32px 24px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    nav { display: none; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-badge">
+      <span></span>
+      Audit SEO Stratégique · Mars 2026
+    </div>
+    <h1 class="main-title">La Capitainerie<br><em>État des lieux SEO</em></h1>
+    <p style="color:rgba(255,255,255,0.55); max-width:560px; font-size:15px; margin-top:12px;">
+      Analyse comparative avant/après refonte, points d'amélioration identifiés lors de l'exploration de l'arborescence, et plan d'actions priorisé.
+    </p>
+    <div class="header-meta">
+      <span>⚓ lacapitainerie.com</span>
+      <span>📅 27 mars 2026</span>
+      <span>🔍 Exploration complète du site</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#avantapres">Avant / Après</a>
+    <a href="#arborescence">Arborescence</a>
+    <a href="#analyse">Analyse technique</a>
+    <a href="#ameliorations">Points d'amélioration</a>
+    <a href="#actions">Plan d'actions</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── SECTION 1 : AVANT / APRÈS ── -->
+  <section id="avantapres">
+    <h2 class="section-title">
+      <span class="num">01 — Comparatif</span>
+      Ce qui a changé
+    </h2>
+    <p class="section-intro">
+      La refonte SEO a corrigé plusieurs blocages fondamentaux. Voici les écarts les plus significatifs observés lors de l'audit.
+    </p>
+
+    <div class="before-after-grid">
+      <div class="ba-col before">
+        <div class="ba-header"><span class="ba-dot"></span>Avant la refonte</div>
+        <div class="ba-item">
+          <span class="ba-icon">🚫</span>
+          <div>
+            <strong>Contenu derrière login</strong>
+            <p>Toutes les offres et fiches métiers exigeaient une connexion. Google ne pouvait rien indexer.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">🔇</span>
+          <div>
+            <strong>Zéro donnée structurée</strong>
+            <p>Aucun Schema.org, pas de JSON-LD. Aucune chance d'apparaître en rich result sur Google.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">🌫️</span>
+          <div>
+            <strong>Pas de pages de catégories</strong>
+            <p>Aucune URL dédiée par poste, secteur, port ou diplôme. La longue traîne était inexistante.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">📄</span>
+          <div>
+            <strong>URLs opaques</strong>
+            <p>Impossible de déduire le contenu d'une page depuis son URL. Aucun signal sémantique pour Google.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">👁️</span>
+          <div>
+            <strong>Visibilité &lt; 10 %</strong>
+            <p>Champ lexical maritime quasi inexistant dans l'index Google. Présence nulle sur les mots-clés métiers.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ba-col after">
+        <div class="ba-header"><span class="ba-dot"></span>Après la refonte</div>
+        <div class="ba-item">
+          <span class="ba-icon">✅</span>
+          <div>
+            <strong>200+ offres indexables publiquement</strong>
+            <p>Les fiches sont désormais accessibles sans connexion, avec <code>robots: index, follow</code> confirmé.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">📊</span>
+          <div>
+            <strong>Schema.org déployé</strong>
+            <p>JobPosting sur chaque offre, CollectionPage + BreadcrumbList sur toutes les pages de listing.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">🗂️</span>
+          <div>
+            <strong>Architecture de silos opérationnelle</strong>
+            <p>Pages dédiées par /poste/, /secteur/, /port/, /diplome/ et /contrat/. Longue traîne activée.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">🔗</span>
+          <div>
+            <strong>URLs sémantiques et canoniques</strong>
+            <p>Structure lisible : <code>/offres/poste/capitaine</code>, <code>/offres/diplome/capitaine-200</code>. Canonical en place.</p>
+          </div>
+        </div>
+        <div class="ba-item">
+          <span class="ba-icon">🚀</span>
+          <div>
+            <strong>Open Graph + BreadcrumbList actifs</strong>
+            <p>Partage social optimisé, fil d'Ariane structuré pour Google sur l'ensemble des pages de catégories.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-bar">
+      <div class="kpi-card green">
+        <div class="kpi-val">200+</div>
+        <div class="kpi-label">Offres désormais<br>indexables publiquement</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-val">40+</div>
+        <div class="kpi-label">Nouvelles URLs<br>de catégories créées</div>
+      </div>
+      <div class="kpi-card amber">
+        <div class="kpi-val">~60%</div>
+        <div class="kpi-label">Score SEO on-page<br>(estimé, vs 10% avant)</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-val">0</div>
+        <div class="kpi-label">Blog / contenu éditorial<br>encore en production</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SECTION 2 : ARBORESCENCE ── -->
+  <section id="arborescence">
+    <h2 class="section-title">
+      <span class="num">02 — Cartographie</span>
+      Arborescence du site
+    </h2>
+    <p class="section-intro">
+      L'exploration du site révèle une structure de silos bien pensée. Voici l'ensemble des URLs publiques identifiées lors de l'audit.
+    </p>
+
+    <div class="url-tree">
+      <div class="url-tree-header">
+        <span class="dot"></span>
+        lacapitainerie.com — Cartographie complète
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Pages principales</div>
+        <div class="url-chips">
+          <span class="url-chip good">/</span>
+          <span class="url-chip good">/offres</span>
+          <span class="url-chip good">/armateurs</span>
+        </div>
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Silos par Poste (8 pages)</div>
+        <div class="url-chips">
+          <span class="url-chip good">/offres/poste/capitaine</span>
+          <span class="url-chip good">/offres/poste/matelot</span>
+          <span class="url-chip good">/offres/poste/mecanicien</span>
+          <span class="url-chip good">/offres/poste/chef-mecanicien</span>
+          <span class="url-chip good">/offres/poste/chef-quart-passerelle</span>
+          <span class="url-chip good">/offres/poste/chef-quart-machine</span>
+          <span class="url-chip good">/offres/poste/chef-quart-navire-de-mer</span>
+          <span class="url-chip good">/offres/poste/second</span>
+        </div>
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Silos par Secteur (5 pages)</div>
+        <div class="url-chips">
+          <span class="url-chip good">/offres/secteur/plaisance</span>
+          <span class="url-chip good">/offres/secteur/peche</span>
+          <span class="url-chip good">/offres/secteur/commerce</span>
+          <span class="url-chip good">/offres/secteur/sport</span>
+          <span class="url-chip good">/offres/secteur/a-terre</span>
+        </div>
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Silos par Port (10 pages)</div>
+        <div class="url-chips">
+          <span class="url-chip good">/offres/port/marseille</span>
+          <span class="url-chip good">/offres/port/le-havre</span>
+          <span class="url-chip good">/offres/port/dunkerque</span>
+          <span class="url-chip good">/offres/port/calais</span>
+          <span class="url-chip good">/offres/port/saint-nazaire</span>
+          <span class="url-chip good">/offres/port/la-rochelle</span>
+          <span class="url-chip good">/offres/port/sete</span>
+          <span class="url-chip good">/offres/port/toulon</span>
+          <span class="url-chip good">/offres/port/nice</span>
+          <span class="url-chip good">/offres/port/brest</span>
+        </div>
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Silos par Diplôme / Brevet (11 pages)</div>
+        <div class="url-chips">
+          <span class="url-chip good">/offres/diplome/capitaine-200</span>
+          <span class="url-chip good">/offres/diplome/capitaine-500</span>
+          <span class="url-chip good">/offres/diplome/capitaine-3000</span>
+          <span class="url-chip good">/offres/diplome/capitaine</span>
+          <span class="url-chip good">/offres/diplome/second-capitaine</span>
+          <span class="url-chip good">/offres/diplome/mecanicien</span>
+          <span class="url-chip good">/offres/diplome/mecanicien-250-kw</span>
+          <span class="url-chip good">/offres/diplome/mecanicien-750-kw</span>
+          <span class="url-chip good">/offres/diplome/chef-mecanicien-3000-kw</span>
+          <span class="url-chip good">/offres/diplome/chef-mecanicien-8000-kw</span>
+          <span class="url-chip good">/offres/diplome/chef-mecanicien</span>
+        </div>
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Silos par Contrat (3 pages)</div>
+        <div class="url-chips">
+          <span class="url-chip good">/offres/contrat/cdi</span>
+          <span class="url-chip good">/offres/contrat/cdd</span>
+          <span class="url-chip good">/offres/contrat/freelance</span>
+        </div>
+      </div>
+
+      <div class="url-section">
+        <div class="url-section-title">Sous-domaines détectés</div>
+        <div class="url-chips">
+          <span class="url-chip">info.lacapitainerie.com (blog/info)</span>
+          <span class="url-chip">armateur.lacapitainerie.com (espace recruteur)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SECTION 3 : ANALYSE TECHNIQUE ── -->
+  <section id="analyse">
+    <h2 class="section-title">
+      <span class="num">03 — Analyse technique</span>
+      État des signaux SEO
+    </h2>
+    <p class="section-intro">
+      Page par page, voici ce que Google voit réellement lors de son exploration.
+    </p>
+
+    <div class="analysis-grid">
+
+      <div class="analysis-card">
+        <h3>Balise &lt;title&gt; — Listing <span class="tag ok">Correct</span></h3>
+        <p>Format cohérent sur les pages de catégories. Inclut le mot-clé principal + nom de marque.</p>
+        <div class="code-snip">Offres d'emploi Capitaine | LaCapitainerie.com<br><br>Offres d'emploi maritime — Capitaine 200 | LaCapitainerie.com</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>Meta-description <span class="tag mid">À optimiser</span></h3>
+        <p>Présente sur toutes les pages mais trop générique. Ne capitalise pas sur les arguments différenciants (STCW, 200+ offres, France & international).</p>
+        <div class="code-snip">❌ "Découvrez les offres d'emploi de plaisance sur LaCapitainerie.com."<br><br>✅ "33 offres en plaisance pro : yachts, voiliers, plaisanciers. Capitaines, matelots, stewards. Postulez en 1 clic sur LaCapitainerie."</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>Schema.org — Pages listing <span class="tag ok">Bien déployé</span></h3>
+        <p>CollectionPage + BreadcrumbList sur toutes les pages de catégories. Hiérarchie correcte. Fil d'Ariane lisible par Google.</p>
+        <div class="code-snip">CollectionPage ✓<br>BreadcrumbList ✓ (3 niveaux)<br>isPartOf WebSite ✓</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>Schema.org — Fiches offres <span class="tag ok">JobPosting actif</span></h3>
+        <p>Chaque fiche d'offre expose un JobPosting complet avec titre, description longue, organisation, lieu et dates. Éligible aux rich results Google Jobs.</p>
+        <div class="code-snip">JobPosting ✓<br>hiringOrganization ✓<br>jobLocation ✓<br>datePosted ✓</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>URLs des fiches offres <span class="tag bad">Problème critique</span></h3>
+        <p>Les URLs des offres individuelles utilisent des identifiants courts non-sémantiques. Google ne peut pas déduire de signal de pertinence depuis l'URL.</p>
+        <div class="code-snip">❌ /offres/koHnWq<br>❌ /offres/McxfQO<br><br>✅ Cible : /offres/maitre-mecanicien-cdd-la-rochelle</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>Page /armateurs <span class="tag bad">Sous-optimisée</span></h3>
+        <p>Aucun Schema.org (pas d'Organization, pas de Service). Pas de H2. Meta-description générique. Page stratégique pour le B2B totalement sans signal SEO.</p>
+        <div class="code-snip">Schema.org : ❌ absent<br>H2 : ❌ absent<br>Meta desc : trop courte</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>Open Graph <span class="tag ok">Présent</span></h3>
+        <p>og:title et og:description détectés sur les pages de secteurs. Améliore le partage sur LinkedIn et Facebook, canaux importants pour le recrutement maritime.</p>
+        <div class="code-snip">og:title ✓<br>og:description ✓</div>
+      </div>
+
+      <div class="analysis-card">
+        <h3>Sous-domaines <span class="tag mid">À consolider</span></h3>
+        <p>info.lacapitainerie.com et armateur.lacapitainerie.com fragmentent l'autorité de domaine. Le jus de liens ne se transfère pas vers le domaine principal sans redirections explicites.</p>
+        <div class="code-snip">info.lacapitainerie.com → blog/info<br>armateur.lacapitainerie.com → espace recruteur<br>⚠ Autorité fragmentée</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SECTION 4 : POINTS D'AMÉLIORATION ── -->
+  <section id="ameliorations">
+    <h2 class="section-title">
+      <span class="num">04 — Améliorations</span>
+      Ce qu'il reste à faire
+    </h2>
+    <p class="section-intro">
+      Points d'optimisation identifiés lors de l'exploration approfondie du site, classés par impact potentiel.
+    </p>
+
+    <div class="improve-list">
+
+      <div class="improve-item">
+        <div class="improve-num">01</div>
+        <div class="improve-body">
+          <h3>URLs des fiches offres — Rendre les slugs sémantiques</h3>
+          <p>Actuellement, chaque offre est accessible via un ID court aléatoire (<code>/offres/koHnWq</code>). Ces URLs n'apportent aucun signal de pertinence à Google. Pour être éligible à Google Jobs et capter la longue traîne, les URLs doivent décrire le poste.</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Générer un slug automatique à la création de l'offre : <code>/offres/[poste]-[secteur]-[contrat]-[ville]</code>.<br>
+            Exemple : <code>/offres/maitre-mecanicien-cdd-la-rochelle</code>. Utiliser les canonicals pour éviter le duplicate si l'ID court est conservé.
+          </div>
+        </div>
+      </div>
+
+      <div class="improve-item">
+        <div class="improve-num">02</div>
+        <div class="improve-body">
+          <h3>Meta-descriptions — Réécriture différenciante sur toutes les pages de silos</h3>
+          <p>Les méta-descriptions actuelles sont valides mais génériques. Elles n'incitent pas au clic (CTR) et ne capitalisent pas sur les arguments forts de la plateforme : vérification STCW, 200+ offres, France & international, inscription gratuite.</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Pour chaque page de silo, insérer : nombre d'offres actuel, zone géographique, argument différenciant + CTA.<br>
+            Template : "[N offres en [métier]] sur yachts, ferries et navires commerciaux. Profils vérifiés STCW. Postulez en 1 clic sur LaCapitainerie."
+          </div>
+        </div>
+      </div>
+
+      <div class="improve-item">
+        <div class="improve-num">03</div>
+        <div class="improve-body">
+          <h3>Contenu éditorial — Créer un blog/guide sur info.lacapitainerie.com</h3>
+          <p>Le sous-domaine <code>info.lacapitainerie.com</code> existe mais il est inaccessible depuis les pages publiques et n'est pas maillé vers le domaine principal. Or, les concurrents (Capt'n Boat, Clicandsea) capturent du trafic qualifié via des guides pratiques : "Comment obtenir le Capitaine 200", "Travailler en offshore maritime", "Portage salarial marin".</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Publier 4 à 6 guides thématiques par mois sur les brevets, secteurs et réglementation ENIM. Mailler chaque article vers les pages de catégories correspondantes. Passer info.lacapitainerie.com sur le domaine principal (/blog/) pour concentrer l'autorité.
+          </div>
+        </div>
+      </div>
+
+      <div class="improve-item">
+        <div class="improve-num">04</div>
+        <div class="improve-body">
+          <h3>Page /armateurs — Enrichissement SEO B2B complet</h3>
+          <p>La page armateurs est une page stratégique pour attirer les recruteurs, mais elle n'a aucun Schema.org (Organization, Service), aucun H2, et une meta-description vide de sens. C'est une page orpheline sur le plan SEO.</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Ajouter Schema.org Service + Organization. Écrire 3-4 H2 avec les mots-clés B2B : "Déposer une offre d'emploi maritime", "Recrutement marin qualifié STCW", "Trouver un capitaine CDI". Enrichir la meta-description avec une promesse chiffrée.
+          </div>
+        </div>
+      </div>
+
+      <div class="improve-item">
+        <div class="improve-num">05</div>
+        <div class="improve-body">
+          <h3>Consolidation des sous-domaines — Centraliser l'autorité</h3>
+          <p>Deux sous-domaines (<code>info.</code> et <code>armateur.</code>) fragmentent le Domain Rating. Chaque backlink pointant vers ces sous-domaines n'alimente pas le domaine principal. Sur le long terme, c'est un handicap face à des concurrents comme Clicandsea qui concentrent toute leur autorité sur un seul domaine.</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Migrer info.lacapitainerie.com → lacapitainerie.com/blog/ avec redirections 301. L'espace armateur peut rester en sous-domaine (outil SaaS différent) mais doit exposer un lien canonique ou un lien dofollow vers le domaine principal.
+          </div>
+        </div>
+      </div>
+
+      <div class="improve-item">
+        <div class="improve-num">06</div>
+        <div class="improve-body">
+          <h3>Maillage interne — Créer des liens croisés entre silos</h3>
+          <p>Les pages de catégories ne se lient pas entre elles. Un visiteur sur <code>/offres/poste/capitaine</code> ne voit pas de liens vers <code>/offres/diplome/capitaine-200</code> ou <code>/offres/secteur/plaisance</code>. Le maillage interne transmet le PageRank et guide Google dans la découverte des pages de longue traîne.</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Sur chaque page de catégorie, ajouter une section "Voir aussi" avec 3 à 5 liens vers des pages connexes. Exemple sur /poste/capitaine → /diplome/capitaine-200, /diplome/capitaine-500, /secteur/plaisance.
+          </div>
+        </div>
+      </div>
+
+      <div class="improve-item">
+        <div class="improve-num">07</div>
+        <div class="improve-body">
+          <h3>Sitemap XML + Search Console — Accélérer l'indexation</h3>
+          <p>Avec 40+ nouvelles URLs de catégories et 200+ fiches d'offres, il est critique de soumettre un sitemap XML complet et de surveiller l'indexation via Google Search Console. Sans cela, Google peut mettre plusieurs semaines à découvrir et indexer toutes les pages.</p>
+          <div class="fix">
+            <strong>🔧 Correctif recommandé</strong>
+            Générer un sitemap.xml dynamique incluant toutes les URLs de silos et fiches d'offres. Le soumettre dans Google Search Console. Surveiller les erreurs d'indexation et les Core Web Vitals semaine par semaine.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SECTION 5 : PLAN D'ACTIONS ── -->
+  <section id="actions">
+    <h2 class="section-title">
+      <span class="num">05 — Plan d'actions</span>
+      Priorisé par impact / effort
+    </h2>
+    <p class="section-intro">
+      Actions classées en trois niveaux de priorité. L'effort est évalué sur 3 points (● = 1 semaine de dev/rédaction).
+    </p>
+
+    <!-- P1 -->
+    <div class="priority-block">
+      <div class="priority-header">
+        <span class="priority-badge p1">Priorité 1 — Impact immédiat</span>
+        <span style="font-size:13px; color:var(--slate);">À faire dans les 2 semaines</span>
+      </div>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Responsable</th>
+            <th>Effort</th>
+            <th>Impact attendu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Soumettre le sitemap XML à Search Console</strong><br><span style="font-size:12px;color:var(--slate)">Couvrir toutes les URLs de catégories et les 200+ offres</span></td>
+            <td><span class="who">Dev</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot empty"></span><span class="effort-dot empty"></span></div></td>
+            <td>Indexation accélérée de 40+ pages</td>
+          </tr>
+          <tr>
+            <td><strong>Réécrire les meta-descriptions des silos</strong><br><span style="font-size:12px;color:var(--slate)">Inclure nombre d'offres, argument STCW, CTA clair</span></td>
+            <td><span class="who">SEO / Rédacteur</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot empty"></span><span class="effort-dot empty"></span></div></td>
+            <td>Amélioration du CTR sur Google</td>
+          </tr>
+          <tr>
+            <td><strong>Enrichir la page /armateurs (Schema + H2 + meta)</strong><br><span style="font-size:12px;color:var(--slate)">Schema Organization + Service, 3 H2 ciblés B2B</span></td>
+            <td><span class="who">Dev + SEO</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot empty"></span></div></td>
+            <td>Visibilité sur les requêtes recruteur</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- P2 -->
+    <div class="priority-block">
+      <div class="priority-header">
+        <span class="priority-badge p2">Priorité 2 — Impact fort, effort modéré</span>
+        <span style="font-size:13px; color:var(--slate);">Dans les 4 à 6 semaines</span>
+      </div>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Responsable</th>
+            <th>Effort</th>
+            <th>Impact attendu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Passer les URLs des offres en slugs sémantiques</strong><br><span style="font-size:12px;color:var(--slate)">/offres/[poste]-[contrat]-[ville] + canonical sur l'ID court</span></td>
+            <td><span class="who">Dev</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot filled"></span></div></td>
+            <td>Éligibilité Google Jobs + longue traîne</td>
+          </tr>
+          <tr>
+            <td><strong>Maillage interne croisé entre silos</strong><br><span style="font-size:12px;color:var(--slate)">Section "Voir aussi" avec 3-5 liens contextuels sur chaque page silo</span></td>
+            <td><span class="who">Dev + SEO</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot empty"></span></div></td>
+            <td>PageRank distribué + crawl amélioré</td>
+          </tr>
+          <tr>
+            <td><strong>Ajouter les balises alt sur les images des offres</strong><br><span style="font-size:12px;color:var(--slate)">Photos de navires avec attribut alt descriptif incluant le nom du bateau / secteur</span></td>
+            <td><span class="who">Dev</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot empty"></span><span class="effort-dot empty"></span></div></td>
+            <td>Accessibilité + Google Images</td>
+          </tr>
+          <tr>
+            <td><strong>Audit Core Web Vitals sur mobile</strong><br><span style="font-size:12px;color:var(--slate)">Vérifier LCP &lt; 2.5s, CLS &lt; 0.1, INP &lt; 200ms via PageSpeed Insights</span></td>
+            <td><span class="who">Dev</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot empty"></span></div></td>
+            <td>Éviter la pénalité mobile Google</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- P3 -->
+    <div class="priority-block">
+      <div class="priority-header">
+        <span class="priority-badge p3">Priorité 3 — Stratégie long terme</span>
+        <span style="font-size:13px; color:var(--slate);">Mois 2 et au-delà</span>
+      </div>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Responsable</th>
+            <th>Effort</th>
+            <th>Impact attendu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Migrer info.lacapitainerie.com → /blog/</strong><br><span style="font-size:12px;color:var(--slate)">Consolider l'autorité de domaine, redirections 301 complètes</span></td>
+            <td><span class="who">Dev + Ops</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot filled"></span></div></td>
+            <td>Autorité concentrée sur le domaine principal</td>
+          </tr>
+          <tr>
+            <td><strong>Production de contenu éditorial (4-6 articles/mois)</strong><br><span style="font-size:12px;color:var(--slate)">Guides brevets, réglementation ENIM, vie à bord, portage salarial marin</span></td>
+            <td><span class="who">Rédacteur SEO</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot filled"></span></div></td>
+            <td>Capturer la longue traîne informationnelle</td>
+          </tr>
+          <tr>
+            <td><strong>Stratégie de netlinking ciblée maritime</strong><br><span style="font-size:12px;color:var(--slate)">Partenariats avec organismes maritimes, écoles de navigation, presse spécialisée</span></td>
+            <td><span class="who">CEO + SEO</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot filled"></span></div></td>
+            <td>Domain Rating + autorité thématique</td>
+          </tr>
+          <tr>
+            <td><strong>Pages FAQ structurées (FAQPage Schema) par métier</strong><br><span style="font-size:12px;color:var(--slate)">"Comment devenir capitaine 200 ?", "Salaire matelot CDI ?"</span></td>
+            <td><span class="who">Rédacteur + Dev</span></td>
+            <td><div class="effort"><span class="effort-dot filled"></span><span class="effort-dot filled"></span><span class="effort-dot empty"></span></div></td>
+            <td>Positions zéro / rich snippets Google</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <!-- ── CONCLUSION ── -->
+  <div class="conclusion-box">
+    <h2>En synthèse</h2>
+    <p>
+      La refonte a posé les <span class="gold">fondations SEO indispensables</span> : contenu public, arborescence sémantique, Schema.org JobPosting et fil d'Ariane. C'est un saut qualitatif majeur depuis la situation initiale (visibilité &lt; 10 %, tout derrière login).
+    </p>
+    <p style="margin-top:16px;">
+      La prochaine étape critique est d'activer <span class="gold">l'indexation via Search Console</span>, de corriger les URLs des offres pour déclencher Google Jobs, et d'amorcer la production de contenu éditorial pour capter la longue traîne informationnelle que Clicandsea et Capt'n Boat exploitent déjà massivement.
+    </p>
+    <p style="margin-top:16px;">
+      Avec une exécution rigoureuse sur 3 mois, La Capitainerie a le potentiel de devenir <span class="gold">la référence SEO du recrutement maritime en France</span>.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  La Capitainerie · Audit SEO Stratégique 2026 · Généré le 27 mars 2026
+</footer>
+
+</body>
+</html>
