@@ -1,11 +1,81 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import {
   BookOpen, Plus, Trash2, Eye, Download, Upload,
-  Calendar, Tag, FileText, ChevronRight, X, AlertCircle,
-  CheckCircle2, Clock, TrendingUp, Anchor,
+  Calendar, X, AlertCircle, RefreshCw,
+  CheckCircle2, Clock, TrendingUp, Anchor, Github, Wifi, WifiOff,
 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
 import { Modal, Field, Input, Textarea, FormActions } from './formUI.jsx';
+
+// ─── Configuration GitHub ─────────────────────────────────────────────────────
+const GITHUB_OWNER  = 'christopherlangparis-svg';
+const GITHUB_REPO   = 'mon-projet-seo';
+const GITHUB_BRANCH = 'main';
+const GITHUB_FOLDER = 'rapports';
+const GITHUB_API    = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FOLDER}?ref=${GITHUB_BRANCH}`;
+
+// ─── Hook de synchronisation GitHub ──────────────────────────────────────────
+function useGithubSync(localRapports, setRapports) {
+  const [syncStatus, setSyncStatus] = useState('idle'); // idle | loading | success | error
+  const [lastSync, setLastSync]     = useState(null);
+
+  const sync = useCallback(async () => {
+    setSyncStatus('loading');
+    try {
+      // 1. Lister les fichiers du dossier /rapports/
+      const listRes = await fetch(GITHUB_API, {
+        headers: { 'Accept': 'application/vnd.github.v3+json' },
+      });
+      if (!listRes.ok) throw new Error(`GitHub API: ${listRes.status}`);
+      const files = await listRes.json();
+
+      // 2. Filtrer les JSON (ignorer .gitkeep)
+      const jsonFiles = files.filter(f => f.name.endsWith('.json'));
+
+      // 3. IDs déjà présents localement
+      const localIds = new Set(localRapports.map(r => String(r.id)));
+
+      // 4. Télécharger uniquement les nouveaux fichiers
+      const newRapports = [];
+      for (const file of jsonFiles) {
+        // Identifier par nom de fichier pour éviter les doublons
+        const alreadyPresent = localRapports.some(
+          r => r._githubFile === file.name
+        );
+        if (alreadyPresent) continue;
+
+        const rawRes = await fetch(file.download_url);
+        if (!rawRes.ok) continue;
+        const data = await rawRes.json();
+
+        // Marquer l'origine GitHub pour éviter les doublons futurs
+        newRapports.push({ ...data, _githubFile: file.name });
+      }
+
+      if (newRapports.length > 0) {
+        setRapports(prev => {
+          // Fusion : nouveaux en tête, dédoublonnage par _githubFile
+          const existingFiles = new Set(prev.map(r => r._githubFile).filter(Boolean));
+          const toAdd = newRapports.filter(r => !existingFiles.has(r._githubFile));
+          return [...toAdd, ...prev].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+        });
+      }
+
+      setSyncStatus('success');
+      setLastSync(new Date());
+    } catch (err) {
+      console.error('Sync GitHub échouée :', err);
+      setSyncStatus('error');
+    }
+  }, [localRapports, setRapports]);
+
+  // Sync automatique au montage du composant
+  useEffect(() => { sync(); }, []); // eslint-disable-line
+
+  return { syncStatus, lastSync, sync };
+}
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 const CATEGORIES = ['Audit complet', 'Suivi mensuel', 'Analyse concurrents', 'Recommandations', 'Autre'];
@@ -398,6 +468,30 @@ function RapportCard({ rapport, onView, onDelete }) {
   );
 }
 
+// ─── Bannière de synchronisation GitHub ──────────────────────────────────────
+function SyncBanner({ status, lastSync, onSync }) {
+  const fmt = (d) => d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+  const states = {
+    idle:    { icon: <Github size={14} />,    text: 'Synchroniser avec GitHub',  cls: 'bg-slate-50 text-slate-500 border-slate-200 hover:border-[#1B263B] hover:text-[#1B263B]' },
+    loading: { icon: <RefreshCw size={14} className="animate-spin" />, text: 'Synchronisation…', cls: 'bg-blue-50 text-blue-600 border-blue-200 cursor-wait' },
+    success: { icon: <Wifi size={14} />,      text: lastSync ? `Sync OK — ${fmt(lastSync)}` : 'Synchronisé', cls: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
+    error:   { icon: <WifiOff size={14} />,   text: 'Sync échouée — réessayer', cls: 'bg-red-50 text-red-500 border-red-200 hover:bg-red-100' },
+  };
+
+  const s = states[status] ?? states.idle;
+
+  return (
+    <button
+      onClick={status !== 'loading' ? onSync : undefined}
+      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${s.cls}`}
+    >
+      {s.icon}
+      {s.text}
+    </button>
+  );
+}
+
 // ─── État vide ────────────────────────────────────────────────────────────────
 function EmptyState({ onAdd }) {
   return (
@@ -422,11 +516,14 @@ function EmptyState({ onAdd }) {
 // ─── Composant principal ──────────────────────────────────────────────────────
 export function TabRapport() {
   const [rapports, setRapports] = useLocalStorage('seo_rapports', []);
-  const [showForm, setShowForm]     = useState(false);
+  const [showForm, setShowForm]       = useState(false);
   const [viewRapport, setViewRapport] = useState(null);
-  const [deleteId, setDeleteId]     = useState(null);
-  const [filterCat, setFilterCat]   = useState('Tous');
+  const [deleteId, setDeleteId]       = useState(null);
+  const [filterCat, setFilterCat]     = useState('Tous');
   const fileInputRef = useRef(null);
+
+  // ── Sync GitHub automatique ──
+  const { syncStatus, lastSync, sync } = useGithubSync(rapports, setRapports);
 
   const saveRapport   = (r)  => setRapports(prev => [r, ...prev]);
   const deleteRapport = (id) => { setRapports(prev => prev.filter(r => r.id !== id)); setDeleteId(null); };
@@ -528,6 +625,7 @@ export function TabRapport() {
 
         {/* Boutons action */}
         <div className="flex gap-2">
+          <SyncBanner status={syncStatus} lastSync={lastSync} onSync={sync} />
           <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={handleImport} />
           <button
             onClick={() => fileInputRef.current?.click()}
