@@ -1,0 +1,529 @@
+{
+  "id": 1776081173650,
+  "date": "2026-04-13T11:52:27.103Z",
+  "titre": "Rapport SEO Hebdomadaire [13042026]",
+  "categorie": "Suivi mensuel",
+  "score": 98,
+  "url_analysee": "https://lacapitainerie.com",
+  "auteur": "SEO Bot 🤖 (GitHub Actions)",
+  "resume": "Audit automatique du 13/04/2026 — 23 pages crawlées. Score SEO global : 98/100. 200+ offres actives indexables. 18/23 pages sans problème. Indexabilité : 100% — Schema.org : 96% — Meta-desc qualitative : 96%. Contenu éditorial et consolidation sous-domaines restent les axes de progression long-terme.",
+  "points_forts": "200+ offres d'emploi indexables publiquement\n100% des pages auditées sont indexables (robots: index, follow)\n96% des pages ont un Schema.org valide (CollectionPage + BreadcrumbList)\n100% des pages ont une balise canonical\n18 page(s) sans aucun problème détecté\nAlt tags : toutes les images ont un attribut alt",
+  "points_faibles": "1 meta-description(s) trop générique(s) — sans argument différenciant (STCW, nb offres, CTA)\n1 page(s) sans H2 — structure de contenu faible\n1 page(s) sans BreadcrumbList\nAucun contenu éditorial (blog/guides) — longue traîne informationnelle inexploitée\nSous-domaines info. et armateur. fragmentent l'autorité de domaine (DR dispersé)",
+  "actions": [
+    {
+      "label": "Réécrire 1 meta-description(s) : inclure nb offres, STCW, CTA différenciant",
+      "priorite": "haute"
+    },
+    {
+      "label": "Enrichir /armateurs : Schema Organization+Service, H2 B2B ciblés, Open Graph",
+      "priorite": "haute"
+    },
+    {
+      "label": "Soumettre/vérifier le sitemap XML dans Google Search Console",
+      "priorite": "haute"
+    },
+    {
+      "label": "Auditer Core Web Vitals mobile (LCP < 2.5s, CLS < 0.1, INP < 200ms) via PageSpeed",
+      "priorite": "moyenne"
+    },
+    {
+      "label": "Migrer info.lacapitainerie.com → /blog/ avec redirections 301 pour concentrer l'autorité",
+      "priorite": "basse"
+    },
+    {
+      "label": "Lancer la production éditoriale : 4-6 guides/mois (brevets, ENIM, offshore, portage salarial)",
+      "priorite": "basse"
+    },
+    {
+      "label": "Créer des pages FAQ (FAQPage Schema) par métier pour viser les positions zéro Google",
+      "priorite": "basse"
+    },
+    {
+      "label": "Stratégie netlinking : partenariats avec écoles navigation, presse maritime, organismes ENIM",
+      "priorite": "basse"
+    }
+  ],
+  "_meta": {
+    "pages_auditees": 23,
+    "pages_sans_probleme": 18,
+    "offres_total": 200,
+    "scores_par_axe": {
+      "indexabilite": "100%",
+      "schema_org": "96%",
+      "meta_desc_qual": "96%",
+      "alt_tags": "100%"
+    },
+    "detail_pages": [
+      {
+        "url": "https://lacapitainerie.com/offres",
+        "label": "Listing Offres",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime | LaCapitainerie.com",
+        "titleLength": 45,
+        "metaDescLength": 37,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Trouve ton prochain embarquement !",
+        "h2Count": 3,
+        "crossLinks": 26,
+        "imagesNoAlt": 0,
+        "offerCount": 200
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/poste/capitaine",
+        "label": "Poste — Capitaine",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Capitaine | LaCapitainerie.com",
+        "titleLength": 46,
+        "metaDescLength": 43,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi capitaine",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 42
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/poste/matelot",
+        "label": "Poste — Matelot",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Matelot | LaCapitainerie.com",
+        "titleLength": 44,
+        "metaDescLength": 41,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi matelot",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 17
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/poste/mecanicien",
+        "label": "Poste — Mécanicien",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Mécanicien | LaCapitainerie.com",
+        "titleLength": 47,
+        "metaDescLength": 52,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi mécanicien",
+        "h2Count": 2,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": null
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/poste/chef-mecanicien",
+        "label": "Poste — Chef Mécanicien",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Chef Mécanicien | LaCapitainerie.com",
+        "titleLength": 52,
+        "metaDescLength": 49,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi chef mécanicien",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 19
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/poste/second",
+        "label": "Poste — Second",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Second | LaCapitainerie.com",
+        "titleLength": 43,
+        "metaDescLength": 39,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi second",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 5
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/secteur/plaisance",
+        "label": "Secteur — Plaisance",
+        "score": 97,
+        "status": 200,
+        "issues": [
+          "[WARNING] Meta title trop long (62 car.)"
+        ],
+        "title": "Offres d'emploi Plaisance Professionnelle | LaCapitainerie.com",
+        "titleLength": 62,
+        "metaDescLength": 75,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi en plaisance professionnelle",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 33
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/secteur/peche",
+        "label": "Secteur — Pêche",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Pêche et Culture | LaCapitainerie.com",
+        "titleLength": 53,
+        "metaDescLength": 67,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi en pêche et culture",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 3
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/secteur/commerce",
+        "label": "Secteur — Commerce",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi commerce | LaCapitainerie.com",
+        "titleLength": 45,
+        "metaDescLength": 65,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi en commerce maritime",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 80
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/secteur/sport",
+        "label": "Secteur — Sport",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi Jeunesse et Sport | LaCapitainerie.com",
+        "titleLength": 54,
+        "metaDescLength": 74,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime jeunesse et sport",
+        "h2Count": 2,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": null
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/secteur/a-terre",
+        "label": "Secteur — À Terre",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime à terre | LaCapitainerie.com",
+        "titleLength": 53,
+        "metaDescLength": 77,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime à terre",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 3
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/port/marseille",
+        "label": "Port — Marseille",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime Marseille | LaCapitainerie.com",
+        "titleLength": 55,
+        "metaDescLength": 49,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime à Marseille",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 22
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/port/le-havre",
+        "label": "Port — Le Havre",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime Le Havre | LaCapitainerie.com",
+        "titleLength": 54,
+        "metaDescLength": 37,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime au Havre",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 19
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/port/dunkerque",
+        "label": "Port — Dunkerque",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime Dunkerque | LaCapitainerie.com",
+        "titleLength": 55,
+        "metaDescLength": 48,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime à Dunkerque",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 7
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/port/brest",
+        "label": "Port — Brest",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime Brest | LaCapitainerie.com",
+        "titleLength": 51,
+        "metaDescLength": 45,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime à Brest",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 17
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/diplome/capitaine-200",
+        "label": "Diplôme — Capitaine 200",
+        "score": 97,
+        "status": 200,
+        "issues": [
+          "[WARNING] Meta title trop long (61 car.)"
+        ],
+        "title": "Offres d'emploi maritime — Capitaine 200 | LaCapitainerie.com",
+        "titleLength": 61,
+        "metaDescLength": 50,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime pour Capitaine 200",
+        "h2Count": 3,
+        "crossLinks": 26,
+        "imagesNoAlt": 0,
+        "offerCount": 10
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/diplome/capitaine-500",
+        "label": "Diplôme — Capitaine 500",
+        "score": 97,
+        "status": 200,
+        "issues": [
+          "[WARNING] Meta title trop long (61 car.)"
+        ],
+        "title": "Offres d'emploi maritime — Capitaine 500 | LaCapitainerie.com",
+        "titleLength": 61,
+        "metaDescLength": 50,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime pour Capitaine 500",
+        "h2Count": 3,
+        "crossLinks": 26,
+        "imagesNoAlt": 0,
+        "offerCount": 4
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/diplome/capitaine-3000",
+        "label": "Diplôme — Capitaine 3000",
+        "score": 97,
+        "status": 200,
+        "issues": [
+          "[WARNING] Meta title trop long (62 car.)"
+        ],
+        "title": "Offres d'emploi maritime — Capitaine 3000 | LaCapitainerie.com",
+        "titleLength": 62,
+        "metaDescLength": 51,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime pour Capitaine 3000",
+        "h2Count": 3,
+        "crossLinks": 26,
+        "imagesNoAlt": 0,
+        "offerCount": 3
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/diplome/mecanicien",
+        "label": "Diplôme — Mécanicien",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime — Mécanicien | LaCapitainerie.com",
+        "titleLength": 58,
+        "metaDescLength": 50,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime pour Mécanicien",
+        "h2Count": 2,
+        "crossLinks": 26,
+        "imagesNoAlt": 0,
+        "offerCount": null
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/contrat/cdi",
+        "label": "Contrat — CDI",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime en CDI | LaCapitainerie.com",
+        "titleLength": 52,
+        "metaDescLength": 59,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime en CDI",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 21
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/contrat/cdd",
+        "label": "Contrat — CDD",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime en CDD | LaCapitainerie.com",
+        "titleLength": 52,
+        "metaDescLength": 60,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime en CDD",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": null
+      },
+      {
+        "url": "https://lacapitainerie.com/offres/contrat/freelance",
+        "label": "Contrat — Freelance",
+        "score": 100,
+        "status": 200,
+        "issues": [],
+        "title": "Offres d'emploi maritime en Freelance | LaCapitainerie.com",
+        "titleLength": 58,
+        "metaDescLength": 64,
+        "descQuality": true,
+        "schemas": [
+          "CollectionPage",
+          "BreadcrumbList"
+        ],
+        "h1": "Offres d'emploi maritime en freelance",
+        "h2Count": 3,
+        "crossLinks": 25,
+        "imagesNoAlt": 0,
+        "offerCount": 16
+      },
+      {
+        "url": "https://lacapitainerie.com/armateurs",
+        "label": "Page Armateurs (B2B)",
+        "score": 69,
+        "status": 200,
+        "issues": [
+          "[WARNING] Meta description générique — pas de mot-clé différenciant (STCW, nb offres, CTA…)",
+          "[CRITIQUE] Aucun Schema.org (JSON-LD)",
+          "[WARNING] BreadcrumbList absent",
+          "[WARNING] Aucun H2 — structure de contenu faible"
+        ],
+        "title": "Découvrez nos armateurs partenaires | LaCapitainerie.com",
+        "titleLength": 56,
+        "metaDescLength": 90,
+        "descQuality": false,
+        "schemas": [],
+        "h1": "Découvrez nos armateurs partenaires",
+        "h2Count": 0,
+        "crossLinks": 0,
+        "imagesNoAlt": 0,
+        "offerCount": 20064
+      }
+    ]
+  }
+}
